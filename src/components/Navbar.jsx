@@ -1,49 +1,53 @@
 import React from 'react';
-import { ShoppingCart, Home, Shield } from 'lucide-react';
+import { ShoppingCart, Home, Sparkles } from 'lucide-react';
 
-const Navbar = ({ onNavigate, cartCount, current }) => {
+export default function Navbar({ onNavigate, cartCount = 0, current = 'home' }) {
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-orange-100">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <button
-          onClick={() => onNavigate('home')}
-          className="flex items-center gap-2 text-orange-600 font-extrabold text-xl"
-        >
-          <span className="inline-block w-8 h-8 rounded-full bg-orange-500 text-white grid place-items-center">🍲</span>
-          FlameLunch
-        </button>
+    <div className="sticky top-0 z-50">
+      <nav className="mx-4 mt-4 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-zinc-900/60 border border-white/30 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <button
+            onClick={() => onNavigate?.('home')}
+            className="group flex items-center gap-2 text-zinc-900 dark:text-zinc-100 font-semibold tracking-tight"
+            aria-label="Go to home"
+          >
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-pink-500 text-white">
+              <Sparkles size={18} />
+            </span>
+            <span className="text-lg">FlameLunch</span>
+          </button>
 
-        <nav className="flex items-center gap-2">
-          <button
-            onClick={() => onNavigate('home')}
-            className={`flex items-center gap-1 px-3 py-2 rounded-md hover:bg-orange-50 transition text-sm ${current==='home' ? 'text-orange-600 font-semibold' : 'text-gray-700'}`}
-          >
-            <Home size={18} />
-            Главная
-          </button>
-          <button
-            onClick={() => onNavigate('admin')}
-            className={`flex items-center gap-1 px-3 py-2 rounded-md hover:bg-orange-50 transition text-sm ${current==='admin' ? 'text-orange-600 font-semibold' : 'text-gray-700'}`}
-          >
-            <Shield size={18} />
-            Админка
-          </button>
-          <button
-            onClick={() => onNavigate('cart')}
-            className="relative flex items-center gap-2 px-3 py-2 rounded-md bg-orange-600 text-white hover:bg-orange-700 transition"
-          >
-            <ShoppingCart size={18} />
-            Корзина
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 text-xs bg-white text-orange-600 border border-orange-600 rounded-full px-1.5 py-0.5">
-                {cartCount}
-              </span>
-            )}
-          </button>
-        </nav>
-      </div>
-    </header>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onNavigate?.('home')}
+              className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-all ${
+                current === 'home'
+                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                  : 'hover:bg-zinc-900/5 dark:hover:bg-white/5'
+              }`}
+            >
+              <Home size={18} />
+              <span>Главная</span>
+            </button>
+            <button
+              onClick={() => onNavigate?.('cart')}
+              className={`relative inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-all ${
+                current === 'cart'
+                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                  : 'hover:bg-zinc-900/5 dark:hover:bg-white/5'
+              }`}
+            >
+              <ShoppingCart size={18} />
+              <span>Корзина</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs rounded-full bg-gradient-to-br from-orange-500 to-pink-500 text-white shadow">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
   );
-};
-
-export default Navbar;
+}

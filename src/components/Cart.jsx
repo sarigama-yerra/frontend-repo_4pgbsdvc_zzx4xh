@@ -1,44 +1,60 @@
 import React from 'react';
+import { Minus, Plus, Trash2, CreditCard } from 'lucide-react';
 
-const Cart = ({ items, onChangeQty, onRemove, onCheckout }) => {
-  const total = items.reduce((sum, it) => sum + it.price * it.qty, 0);
+export default function Cart({ items = [], onChangeQty, onRemove, onCheckout }) {
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+
   return (
-    <section className="max-w-4xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-4">Ваш заказ</h2>
+    <main className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-6">Ваша корзина</h1>
       {items.length === 0 ? (
-        <div className="text-gray-600">Корзина пуста. Добавьте блюда из меню.</div>
+        <div className="rounded-2xl border bg-white/70 backdrop-blur p-8 text-center text-zinc-600">
+          Корзина пуста. Добавьте блюда с главной страницы.
+        </div>
       ) : (
-        <div className="bg-white rounded-xl border border-orange-100 shadow-sm overflow-hidden">
-          <ul className="divide-y">
-            {items.map((it) => (
-              <li key={it.id} className="p-4 grid grid-cols-[1fr_auto_auto_auto] items-center gap-4">
-                <div>
-                  <div className="font-semibold text-gray-900">{it.name}</div>
-                  <div className="text-sm text-gray-600">{it.price} ₽</div>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-4">
+            {items.map((item) => (
+              <div key={item.id} className="flex items-center gap-4 rounded-2xl border bg-white/70 backdrop-blur p-4">
+                <img src={item.image} alt={item.name} className="h-20 w-24 object-cover rounded-xl" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">{item.name}</h3>
+                    <button onClick={() => onRemove?.(item.id)} className="p-2 rounded-lg hover:bg-zinc-100">
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                  <p className="text-sm text-zinc-600 line-clamp-2">{item.description}</p>
+                  <div className="mt-3 flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2">
+                      <button onClick={() => onChangeQty?.(item.id, Math.max(1, item.qty - 1))} className="p-2 rounded-lg border bg-white">
+                        <Minus size={16} />
+                      </button>
+                      <span className="px-3 py-1 rounded-lg bg-zinc-100">{item.qty}</span>
+                      <button onClick={() => onChangeQty?.(item.id, item.qty + 1)} className="p-2 rounded-lg border bg-white">
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                    <div className="font-semibold">{item.price * item.qty} ₽</div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button className="px-2 py-1 border rounded-md" onClick={() => onChangeQty(it.id, Math.max(1, it.qty - 1))}>-</button>
-                  <span className="w-8 text-center">{it.qty}</span>
-                  <button className="px-2 py-1 border rounded-md" onClick={() => onChangeQty(it.id, it.qty + 1)}>+</button>
-                </div>
-                <div className="font-semibold">{(it.price * it.qty).toFixed(0)} ₽</div>
-                <button className="text-red-600 hover:underline" onClick={() => onRemove(it.id)}>Удалить</button>
-              </li>
+              </div>
             ))}
-          </ul>
-          <div className="p-4 flex items-center justify-between bg-orange-50">
-            <div className="text-lg font-bold text-orange-700">Итого: {total.toFixed(0)} ₽</div>
           </div>
-          <div className="p-4 grid md:grid-cols-2 gap-4">
-            <input className="w-full border rounded-md px-3 py-2" placeholder="Адрес доставки" />
-            <input className="w-full border rounded-md px-3 py-2" placeholder="Телефон" />
-            <textarea className="md:col-span-2 w-full border rounded-md px-3 py-2" placeholder="Комментарий к заказу" />
-            <button onClick={onCheckout} className="md:col-span-2 w-full px-4 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700">Оформить заказ</button>
-          </div>
+
+          <aside className="space-y-4">
+            <div className="rounded-2xl border bg-white/70 backdrop-blur p-5">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-zinc-600">Итого</span>
+                <span className="text-xl font-bold">{total} ₽</span>
+              </div>
+              <button onClick={onCheckout} className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-zinc-900 text-white">
+                <CreditCard size={18} /> Оформить заказ
+              </button>
+            </div>
+          </aside>
         </div>
       )}
-    </section>
+    </main>
   );
-};
-
-export default Cart;
+}

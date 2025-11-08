@@ -1,40 +1,53 @@
 import React from 'react';
-import { Rocket } from 'lucide-react';
+import { Rocket, ArrowRight } from 'lucide-react';
 
-const Hero = () => {
+export default function Hero({ onExplore }) {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-white pointer-events-none" />
-      <div className="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900">
-            Идеальный бизнес-ланч с доставкой
-            <span className="block text-orange-600">соберите свой сет за минуту</span>
-          </h1>
-          <p className="mt-4 text-gray-600">
-            Супы, горячее, салаты, напитки и выпечка — в одном заказе. Быстро, свежо и по-оранжевому вкусно.
-          </p>
-          <div className="mt-6 flex items-center gap-3">
-            <a href="#menu" className="px-5 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition">Собрать ланч</a>
-            <a href="#about" className="px-5 py-3 bg-white border border-orange-200 text-orange-700 rounded-md hover:bg-orange-50 transition flex items-center gap-2">
-              <Rocket size={18} /> Как это работает
-            </a>
+    <section className="relative">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -inset-[20%] bg-[conic-gradient(at_10%_10%,#ffedd5_0deg,#f97316_120deg,#f43f5e_240deg,#ffedd5_360deg)] opacity-30 blur-3xl" />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto px-4 pt-16 pb-10">
+        <div className="grid md:grid-cols-2 items-center gap-8">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 backdrop-blur border border-white/40 shadow text-sm">
+              <Rocket size={16} className="text-orange-600" />
+              <span className="text-zinc-700">Собери свой идеальный бизнес-ланч</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-zinc-900">
+              Быстро. Вкусно. Современно.
+            </h1>
+            <p className="text-lg text-zinc-600">
+              FlameLunch — это стильная доставка обедов с акцентом на свежесть, скорость и удобство. Выбирайте блюда, управляйте корзиной и оформляйте заказ за минуты.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={onExplore}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-zinc-900 text-white hover:translate-y-0.5 transition-transform"
+              >
+                Начать выбор
+                <ArrowRight size={18} />
+              </button>
+              <a
+                href="#categories"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50"
+              >
+                Посмотреть меню
+              </a>
+            </div>
           </div>
-        </div>
-        <div className="relative">
-          <img
-            src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1600&auto=format&fit=crop"
-            alt="Business lunch"
-            className="rounded-xl shadow-2xl ring-1 ring-orange-100"
-          />
-          <div className="absolute -bottom-4 -left-4 bg-white rounded-lg shadow p-3 border border-orange-100">
-            <span className="text-sm text-gray-600">Среднее время доставки</span>
-            <div className="text-lg font-bold text-orange-600">35 мин</div>
+          <div className="relative">
+            <div className="aspect-[4/3] rounded-3xl overflow-hidden border border-white/40 shadow-2xl bg-gradient-to-br from-orange-200 via-pink-200 to-amber-200">
+              <img
+                className="w-full h-full object-cover mix-blend-multiply"
+                src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1600&auto=format&fit=crop"
+                alt="Modern lunch selection"
+              />
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

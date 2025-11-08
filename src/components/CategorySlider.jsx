@@ -1,47 +1,50 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useRef } from 'react';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 
-const CategorySlider = ({ title, items, onAdd }) => {
-  const scrollerRef = React.useRef(null);
-
-  const scrollBy = (delta) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.scrollBy({ left: delta, behavior: 'smooth' });
+export default function CategorySlider({ title, items = [], onAdd }) {
+  const ref = useRef(null);
+  const scrollBy = (dir) => {
+    ref.current?.scrollBy({ left: dir * 320, behavior: 'smooth' });
   };
 
   return (
-    <section className="my-8" id="menu">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-        <div className="flex gap-2">
-          <button onClick={() => scrollBy(-300)} className="p-2 rounded-md border bg-white hover:bg-orange-50 text-gray-700">
-            <ChevronLeft size={18} />
-          </button>
-          <button onClick={() => scrollBy(300)} className="p-2 rounded-md border bg-white hover:bg-orange-50 text-gray-700">
-            <ChevronRight size={18} />
-          </button>
+    <section id="categories" className="py-8">
+      <div className="flex items-end justify-between mb-4">
+        <h2 className="text-xl md:text-2xl font-bold text-zinc-900">{title}</h2>
+        <div className="hidden md:flex gap-2">
+          <button onClick={() => scrollBy(-1)} className="p-2 rounded-lg border bg-white hover:bg-zinc-50"><ChevronLeft size={18} /></button>
+          <button onClick={() => scrollBy(1)} className="p-2 rounded-lg border bg-white hover:bg-zinc-50"><ChevronRight size={18} /></button>
         </div>
       </div>
-      <div ref={scrollerRef} className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+
+      <div
+        ref={ref}
+        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none"
+      >
         {items.map((item) => (
-          <div key={item.id} className="min-w-[240px] snap-start bg-white rounded-xl border border-orange-100 shadow-sm overflow-hidden">
-            <img src={item.image} alt={item.name} className="h-36 w-full object-cover" />
-            <div className="p-3">
-              <div className="font-semibold text-gray-900">{item.name}</div>
-              <div className="text-sm text-gray-600 line-clamp-2">{item.description}</div>
-              <div className="mt-2 flex items-center justify-between">
-                <span className="text-orange-600 font-bold">{item.price} ₽</span>
-                <button onClick={() => onAdd(item)} className="px-3 py-1.5 bg-orange-600 text-white rounded-md hover:bg-orange-700 text-sm">
-                  В корзину
-                </button>
-              </div>
+          <article
+            key={item.id}
+            className="min-w-[280px] max-w-[280px] snap-start rounded-2xl border bg-white/80 backdrop-blur hover:shadow-xl transition-shadow"
+          >
+            <div className="aspect-[4/3] overflow-hidden rounded-t-2xl">
+              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
             </div>
-          </div>
+            <div className="p-4 space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-semibold text-zinc-900 truncate">{item.name}</h3>
+                <span className="text-zinc-900 font-semibold">{item.price} ₽</span>
+              </div>
+              <p className="text-sm text-zinc-600 line-clamp-2">{item.description}</p>
+              <button
+                onClick={() => onAdd?.(item)}
+                className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-zinc-900 text-white hover:translate-y-0.5 transition-transform"
+              >
+                <Plus size={16} /> В корзину
+              </button>
+            </div>
+          </article>
         ))}
       </div>
     </section>
   );
-};
-
-export default CategorySlider;
+}
